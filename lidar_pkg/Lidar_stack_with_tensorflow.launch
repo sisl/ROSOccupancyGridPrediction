@@ -1,0 +1,24 @@
+<launch>
+  <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
+
+  <node pkg="nodelet" type="nodelet" name="AggregatePoints" args="load lidar_pkg/AggregatePoints standalone_nodelet" output="screen">
+    <remap from="/AggregatePoints/agg_points" to="MrfGroundSeg/agg_points"/> -->
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="MrfGroundSeg" args="load lidar_pkg/MrfGroundSeg standalone_nodelet" output="screen">
+    <remap from="/MrfGroundSeg/mrf_filtered_points" to="OccupancyGridGeneration/mrf_filtered_points"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="OccupancyGridGeneration" args="load lidar_pkg/OccupancyGridGeneration standalone_nodelet" output="screen">
+    <remap from="/OccupancyGridGeneration/occupancy" to="Inference/occupancy"/>
+    <remap from="/OccupancyGridGeneration/masses" to="Inference/masses"/>
+  </node>
+
+ <node pkg="nodelet" type="nodelet" name="Inference" args="load lidar_pkg/Inference standalone_nodelet" output="screen">
+    <remap from="/Inference/prediction_all" to="Visualize/prediction_all"/>
+  </node>
+
+  <node pkg="nodelet" type="nodelet" name="Visualize" args="load lidar_pkg/Visualize standalone_nodelet" output="screen">
+  </node>
+
+</launch>
