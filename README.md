@@ -1,4 +1,4 @@
-# ROSOccupancyGridPrediction
+# ROS Occupancy Grid Prediction
 
 # TO DO:
 
@@ -14,9 +14,9 @@
 Requirments:
 - Ubuntu 18.04
 - ROS Melodic 
-- Tensorflow VERSION
-- PyTorch VERSION
-- CUDA VERSION
+- Tensorflow r2.3 for CUDA 11.0 (compiled from source and linked accordingly)
+- LibTorch 1.8.0 for CUDA 11.0 (binary downloaded from PyTorch website)
+- CUDA 11.0
 
 
 
