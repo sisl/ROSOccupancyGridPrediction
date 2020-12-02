@@ -63,6 +63,11 @@ add_message_files(
    masses.msg
    prediction.msg
    future_masses.msg
+   vehicle_state.msg
+)
+
+add_library(${PROJECT_NAME}
+  src/vehicle_msg.cpp
 )
 
 ## Generate services in the 'srv' folder
@@ -117,7 +122,7 @@ generate_messages(
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
   INCLUDE_DIRS include
-  #  LIBRARIES lidar_msgs
+  LIBRARIES lidar_msgs
   CATKIN_DEPENDS
     std_msgs
     geometry_msgs
@@ -150,7 +155,7 @@ add_definitions(${PCL_DEFINITIONS})
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context

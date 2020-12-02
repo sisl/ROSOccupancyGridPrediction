@@ -2,7 +2,7 @@
 #include <pcl_ros/point_cloud.h>
 #include <pcl_ros/transforms.h>
 #include <lidar_msgs/point_types.h>
-#include <auto_messages/vehicle_msg.h>
+#include <lidar_msgs/vehicle_msg.h>
 #include <tf/transform_listener.h>
 #include <nodelet/nodelet.h>
 
@@ -24,7 +24,7 @@ namespace lidar_pkg
       }
 
     void filter(DDLPointCloud &cloud);
-    void setVehicle(VehicleMsg vehicle);
+    void setVehicle(lidar_msgs::VehicleMsg vehicle);
 
     private:
       int device_id;
@@ -37,7 +37,7 @@ namespace lidar_pkg
       double max_local_height;
       DDLPointCloud filt_cloud;
 
-      VehicleMsg vehicle;
+      lidar_msgs::VehicleMsg vehicle;
       double E_m;
       double N_m;
 
@@ -62,7 +62,7 @@ namespace lidar_pkg
       DDLPointCloud blue_cloud;
       DDLPointCloud green_cloud;
       DDLPointCloud velo_cloud;
-      VehicleMsg vehicle_msg;
+      lidar_msgs::VehicleMsg vehicle_msg;
       CloudFilter filter;
 
       ros::Subscriber yellow_sub;
@@ -80,7 +80,7 @@ namespace lidar_pkg
       void blue_cb(const DDLPointCloud::ConstPtr &pcMsg);
       void green_cb(const DDLPointCloud::ConstPtr &pcMsg);
       void velo_cb(const DDLPointCloud::ConstPtr &pcMsg);
-      void vehicleCallback(const auto_messages::from_autobox& autobox);
+      void vehicleCallback(const lidar_msgs::vehicle_state& vehicleState);
       void timerCallback(const ros::TimerEvent&);
     };
 }

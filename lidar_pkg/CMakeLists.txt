@@ -10,7 +10,6 @@ find_package(catkin REQUIRED COMPONENTS
   lidar_msgs
   nodelet
   roscpp
-  auto_messages
   lidar_msgs
   rospy
   std_msgs

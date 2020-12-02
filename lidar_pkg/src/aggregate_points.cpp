@@ -75,7 +75,7 @@ namespace lidar_pkg
     return false;
   }
 
-  void CloudFilter::setVehicle(VehicleMsg vehicle){
+  void CloudFilter::setVehicle(lidar_msgs::VehicleMsg vehicle){
     this->vehicle = vehicle;
     double psi_rad;
     this->vehicle.getPose(this->E_m, this->N_m, psi_rad);
@@ -108,7 +108,7 @@ namespace lidar_pkg
     blue_sub = private_nh.subscribe("velo_blue_points", 1, &AggregatePoints::blue_cb, this);
     green_sub = private_nh.subscribe("velo_green_points", 1, &AggregatePoints::green_cb, this);
     velo_sub = private_nh.subscribe("velodyne_points", 1, &AggregatePoints::velo_cb, this);
-    veh_sub = private_nh.subscribe("from_autobox", 1, &AggregatePoints::vehicleCallback, this);
+    veh_sub = private_nh.subscribe("vehicle_state", 1, &AggregatePoints::vehicleCallback, this);
     timer = private_nh.createTimer(ros::Duration(0.1), &AggregatePoints::timerCallback, this);
   }
 
@@ -120,10 +120,10 @@ namespace lidar_pkg
   void AggregatePoints::aggregate_cloud()
   {
     agg_cloud = yellow_cloud;
-    //this->agg_cloud += this->red_cloud;
-    //this->agg_cloud += this->blue_cloud;
-    agg_cloud += green_cloud;
-    //this->agg_cloud += this->velo_cloud;
+    this->agg_cloud += this->red_cloud;
+    this->agg_cloud += this->blue_cloud;
+    this->agg_cloud += this->green_cloud;
+    this->agg_cloud += this->velo_cloud;
     agg_cloud.header.frame_id = red_cloud.header.frame_id;
   }
 
@@ -162,9 +162,9 @@ namespace lidar_pkg
     aggregate_cloud();
   }
 
-  void AggregatePoints::vehicleCallback(const auto_messages::from_autobox& autobox)
+  void AggregatePoints::vehicleCallback(const lidar_msgs::vehicle_state& vehicleState)
   {
-    vehicle_msg = VehicleMsg(autobox);
+    vehicle_msg = lidar_msgs::VehicleMsg(vehicleState);
     filter.setVehicle(vehicle_msg);
   }
 }
