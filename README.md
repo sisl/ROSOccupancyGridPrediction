@@ -48,7 +48,7 @@ Tested on:
 - LibTorch 1.8.0 for CUDA 11.0 (binary downloaded from [PyTorch website](https://pytorch.org/cppdocs/installing.html))
 - CUDA 11.0
 - Nvidia RTX 2080Ti
-- Intel i9-9900KF.
+- Intel i9-9900KF
 
 Performance:
 
