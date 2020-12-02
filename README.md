@@ -37,7 +37,7 @@ To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics nee
 
 ## Example of the rviz visualization.
 
-![Example](relative/path/to/img.jpg?raw=true "Title")
+![](images/Example_vis.jpg)
 
 ## Experiments 
 
