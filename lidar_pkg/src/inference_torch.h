@@ -33,15 +33,17 @@ namespace lidar_pkg {
     int time=0;
     bool data_acquired = false;
 
-    torch::jit::script::Module module;
-    // std::shared_ptr<torch::jit::script::Module> module;
+    //torch::jit::script::Module module;
+    std::shared_ptr<torch::jit::script::Module> module;
     //torch::Device device;
 
     virtual void onInit();
     void timerCallback(const ros::TimerEvent&);
     void createTensorFromFrames(std::vector<torch::jit::IValue>& input);
     void occupancy_grid_callback(const nav_msgs::OccupancyGrid::ConstPtr& occupancy);
-    void createPredictionAndPublish(std::vector<torch::jit::IValue>& input);
+    // void createPredictionAndPublish(std::vector<torch::jit::IValue>& input);
+    void Publish(torch::Tensor& new_out);
+    torch::Tensor Infer(const std::vector<torch::jit::IValue>& input);
     void masses_callback(const lidar_msgs::masses::ConstPtr& masses_data);
     void publishPrediction();
   };

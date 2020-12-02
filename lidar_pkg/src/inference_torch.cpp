@@ -17,8 +17,11 @@
 #include <lidar_msgs/prediction.h>
 
 #include <memory>
+#include <chrono>
 
 PLUGINLIB_EXPORT_CLASS(lidar_pkg::InferenceTorch, nodelet::Nodelet)
+
+using namespace std::chrono;
 
 namespace lidar_pkg
 {
@@ -26,29 +29,30 @@ namespace lidar_pkg
   {
     ROS_INFO("Initialized PyTorch Inference.");
 
-    // if (torch::cuda::is_available()) {
-    //   ROS_INFO("CUDA available! Inference on GPU.");
-    //   device =  torch::Device(torch::kCUDA);
-    // } else {
-    //   ROS_INFO("Inference on CPU.");
-    //   device =  torch::Device(torch::kCPU);
-    // }
+    if (torch::cuda::is_available()) {
+      ROS_INFO("CUDA available! Inference on GPU.");
+      //device =  torch::Device(torch::kCUDA);
+    } else {
+      ROS_INFO("Inference on CPU.");
+      // device =  torch::Device(torch::kCPU);
+    }
 
     ros::NodeHandle& private_nh = getMTPrivateNodeHandle();
 
     // Path to the model
-    std::string jitPath = "/home/bernard/catkin_ws/src/ROS_OGP/RealTimeEnvironmentPrediction/models/kitti_saa.pt";
+    std::string jitPath = "/home/bernard/catkin_ws/src/ROS_OGP/ROSOccupancyGridPrediction/models/kitti_saa2.pt";
 
     // Loading the model
     ROS_INFO("Loading the module...");
     try {
-       module = torch::jit::load(jitPath);
-       module.to(torch::kCUDA);
-       module.eval();
+       module = std::make_shared<torch::jit::script::Module> (torch::jit::load(jitPath));
+       module->to(torch::kCUDA);
+       module->eval();
+       torch::NoGradGuard no_grad;
        torch::Tensor input_data = torch::ones({1, 20, 2, 128, 128});
        std::vector<torch::jit::IValue> input;
        input.push_back(input_data.to(torch::kCUDA));
-       at::Tensor output = module.forward(input).toTensor();
+       at::Tensor output = module->forward(input).toTensor();
 
        // std::shared_ptr<torch::jit::script::Module> module = torch::jit::load(jitPath);
        // module->to(torch::kCUDA);
@@ -62,7 +66,7 @@ namespace lidar_pkg
 
     pred_pub = private_nh.advertise<nav_msgs::OccupancyGrid>("prediction", 1);
     pred_all_pub = private_nh.advertise<lidar_msgs::prediction>("prediction_all", 1);
-    occupancy_grid_sub = private_nh.subscribe("occupancy", 1, &InferenceTorch::occupancy_grid_callback, this);
+    //occupancy_grid_sub = private_nh.subscribe("occupancy", 1, &InferenceTorch::occupancy_grid_callback, this);
     masses_sub = private_nh.subscribe("masses", 1, &InferenceTorch::masses_callback, this);
     timer = private_nh.createTimer(ros::Duration(0.001), &InferenceTorch::timerCallback, this); //Reduced time but it didn't change much
   }
@@ -71,25 +75,43 @@ namespace lidar_pkg
   {
     if (data_acquired==true)
     {
+      auto start = high_resolution_clock::now();
       std::vector<torch::jit::IValue> input;
-      //ROS_INFO("Inside the timer");
+      ROS_INFO("Processing masses");
       createTensorFromFrames(input);
-      //ROS_INFO("Created frames");
-      createPredictionAndPublish(input);
+      auto stop1 = high_resolution_clock::now();
+      ROS_INFO("Making predictions");
+      torch::Tensor output = Infer(input);
+      auto stop2 = high_resolution_clock::now();
+      ROS_INFO("Publishing the prediction");
+      Publish(output);
+      auto stop3 = high_resolution_clock::now();
+      auto duration1 = duration_cast<microseconds>(stop1 - start);
+      auto duration2 = duration_cast<microseconds>(stop2 - stop1);
+      auto duration3 = duration_cast<microseconds>(stop3 - stop2);
+      std::cout << "Times: " << duration1.count() << " " << duration2.count() << " " << duration3.count() << std::endl;
     }
     else {
-      ROS_INFO("Clock is paused...");
+      ROS_INFO("Not enough data...");
     }
   }
 
-  void InferenceTorch::createPredictionAndPublish(std::vector<torch::jit::IValue>& input)
+  torch::Tensor InferenceTorch::Infer(const std::vector<torch::jit::IValue>& input)
   {
-    torch::Device device(torch::kCPU);
+    torch::NoGradGuard no_grad;
+    torch::Tensor output = module->forward(input).toTensor();
+    std::cout << "Device type: " << (output.device().type()) << std::endl;
+    std::cout << "Required grad: " <<  (output.requires_grad()) << std::endl;
+    return output;
+  }
 
-    //ROS_INFO("Publishing");
+  void InferenceTorch::Publish(torch::Tensor& out)
+  {
+    ROS_INFO("Publishing prediction");
     prediction_msg.prediction.clear();
-    at::Tensor output = module.forward(input).toTensor();
-    torch::Tensor new_out = output.to(device);
+    // torch::NoGradGuard no_grad;
+    // at::Tensor output = module.forward(input).toTensor();
+    // torch::Tensor new_out = output.to(device);
     //ROS_INFO("AFTER PREDICTION");
 
     // __global__ void packed_accessor_kernel(
@@ -98,6 +120,9 @@ namespace lidar_pkg
     // int i=threadIdx.x
     // gpuAtomicAdd(trace, foo[i][i])
     // }
+
+    torch::Device device(torch::kCPU);
+    torch::Tensor new_out = out.to(device);
 
     int grid_size = 128;
     auto output_values = new_out.accessor<float,5>();
@@ -173,7 +198,7 @@ namespace lidar_pkg
   {
 
     ROS_INFO("Data collected Masses");
-    //time++;
+    time++;
     nav_msgs::OccupancyGrid zeross;
     //zeross.data = occupancy.data;
     if (time <= 5){
@@ -185,8 +210,8 @@ namespace lidar_pkg
         history_m[i] = history_m[i+1];
       }
     history_m[4] = (*masses_data);
+    ROS_INFO("Done with Data collected");
     }
-      ROS_INFO("Done with Data collected");
 
   }
 }

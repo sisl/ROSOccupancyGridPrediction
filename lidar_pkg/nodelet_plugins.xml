@@ -23,7 +23,7 @@
     </description>
   </class>
 
-  <class name="lidar_pkg/Inference" type="lidar_pkg::Inference" base_class_type="nodelet::Nodelet">
+  <class name="lidar_pkg/InferenceTF" type="lidar_pkg::InferenceTF" base_class_type="nodelet::Nodelet">
     <description>
       Write things here.
     </description>
