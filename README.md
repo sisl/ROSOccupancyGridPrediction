@@ -1,6 +1,6 @@
 # ROS Occupancy Grid Prediction
 
-This package contains ROS C++ Occupancy Grid Prediction framework which contains point cloud preprocessing, ground segementation, occupancy grid generation, and occupancy grid prediction. The pipeline follows the approach defined by Itkina et al. [1]. The package is compatible with models trained in Tensorflow and PyTorch provided as protocol buffers (.pb) and torch script (.pt), respectively. It contains PredNet [1], PredNet with TAAConvLSTM, and PredNet with SAAConvLSTM [2] models trained on the KITTI dataset [3]. Pointcloud can be provided in the form of a rosbag or directly from the robot Lidar sensors. This package does not contain the Tensorflow C++ API and LibTorch API (PyTorch C++), and the rosbags. The example of the rosbags are available Ford AV Dataset Link.
+This package contains ROS C++ Occupancy Grid Prediction framework which contains point cloud preprocessing, ground segementation, occupancy grid generation, and occupancy grid prediction. The pipeline follows the approach defined by Itkina et al. [1]. The package is compatible with models trained in Tensorflow and PyTorch provided as protocol buffers (.pb) and torch script (.pt), respectively. It contains PredNet [1], PredNet with TAAConvLSTM, and PredNet with SAAConvLSTM [2] models trained on the KITTI dataset [3]. Pointcloud can be provided in the form of a rosbag or directly from the robot Lidar sensors. This package does not contain the Tensorflow C++ API and LibTorch API (PyTorch C++), and the rosbags. The example of the rosbags are available in [Ford AV Dataset](https://avdata.ford.com/) [4].
 
 ## ROS Lidar pointcloud compatibility
 
@@ -44,15 +44,15 @@ To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics nee
 Tested on:
 - Ubuntu 18.04
 - ROS Melodic 
-- Tensorflow r2.3 for CUDA 11.0 (compiled from source and linked accordingly in the CMake files)
-- LibTorch 1.8.0 for CUDA 11.0 (binary downloaded from PyTorch website)
+- Tensorflow r2.3 for CUDA 11.0 (compiled from source and linked accordingly in the CMake files, follow [official Tensorflow instructions](https://www.tensorflow.org/install/source))
+- LibTorch 1.8.0 for CUDA 11.0 (binary downloaded from [PyTorch website](https://pytorch.org/cppdocs/installing.html))
 - CUDA 11.0
 - Nvidia RTX 2080Ti
-- Intel i9 NAME OF THE PROCESSOR.
+- Intel i9-9900KF.
 
 Performance:
 
-| Models        | Publish rate using TF (Hz)       |  Publish rate using LibTorch (Hz)   |
+| Models        | Publish rate using Tensorflow (Hz) |  Publish rate using LibTorch (Hz)   |
 | ------------- |:-------------:| -----:|
 | PredNet    | 9.7 ± 0.52 | 13.5 ± 0.34 |
 | PredNet with TAAConvLSTM      | -      |   6.5 ± 0.49 |
@@ -68,6 +68,8 @@ The  authors  would  like  to  acknowledge  this  project  bein made possible by
 [2] Lange, B., Itkina, M. and Kochenderfer, M.J., 2020. Attention Augmented ConvLSTM for Environment Prediction. arXiv preprint arXiv:2010.09662.
 
 [3] Geiger, A., Lenz, P., Stiller, C. and Urtasun, R., 2013. Vision meets robotics: The kitti dataset. The International Journal of Robotics Research, 32(11), pp.1231-1237.
+
+[4] Agarwal, S., Vora, A., Pandey, G., Williams, W., Kourous, H. and McBride, J., 2020. Ford Multi-AV Seasonal Dataset. arXiv preprint arXiv:2003.07969.
 
 
 
