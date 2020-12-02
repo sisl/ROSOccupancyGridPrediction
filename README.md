@@ -15,7 +15,7 @@ To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics nee
   ```bash
   rosparam set use_sim_time True
   ```
-3. In the same terminal, launch the node. Pick the right launch file depending if you are doing reference using Tensorflow or LibTorch.
+3. In the same terminal, launch the node. Pick the right launch file depending if you are doing inference using Tensorflow or LibTorch.
 
   ```bash
   roslaunch lidar_pkg Lidar_stack_with_tensorflow.launch or roslaunch lidar_pkg Lidar_stack_with_torch.launch
