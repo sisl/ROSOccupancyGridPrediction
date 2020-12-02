@@ -4,7 +4,7 @@ This package contains ROS C++ Occupancy Grid Prediction framework which contains
 
 ## ROS Lidar pointcloud compatibility
 
-To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics needs to be renamed in the aggregate_points.cpp file in lines 106-111 to match the topics and the number of Lidar sensors in the rosbag. The type of message used to represent the Lidar pointcloud and all other messages are defined in lidar_msgs.
+To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics needs to be renamed in the aggregate_points.cpp file in lines 106-111 to match the topics and the number of Lidar sensors in the rosbag. The type of message used to represent the Lidar pointcloud and all other messages are defined in lidar_msgs. The package requires information about the vehicle motion between frames which is defined by evaluating the tranform between "/map" topic (ground truth) and "/vehicle_ground_cartesian". It is defined in timer_cb in occupancy_grid_generation.cpp.
 
 ## How to run it?
 
