@@ -35,7 +35,7 @@ To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics nee
 
 7. In the terminal with rosbag play command, press SPACE to stop/resume the rosbag. To see the predictions, press SPACE (pause). Predictions will appear to the right of the occupancy grid.
 
-## Example of the rviz visualization.
+## Example of the rviz visualization
 
 ![](images/Example_vis.jpg)
 
