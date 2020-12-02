@@ -13,7 +13,7 @@ To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics nee
 2. Set the simulation time.
 
   ```bash
-  rosparam set use_sime_time True
+  rosparam set use_sim_time True
   ```
 3. In the same terminal, launch the node. Pick the right launch file depending if you are doing reference using Tensorflow or LibTorch.
 
