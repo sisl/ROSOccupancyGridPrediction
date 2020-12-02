@@ -59,7 +59,7 @@ Performance:
 | PredNet with SAAConvLSTM | -      |    5.1 ± 0.45 |
 
 ## Acknowledgements 
-The  authors  would  like  to  acknowledge  this  project  bein made possible by the funding from the Ford-Stanford Alliance. 
+The  authors would like to acknowledge this project being made possible by the funding from the Ford-Stanford Alliance. 
 
 ## References
 
