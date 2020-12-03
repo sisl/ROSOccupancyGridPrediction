@@ -1,3 +1,7 @@
+## Ford AV Dataset Branch
+It requires renaming topics inside the multi_lidar_convert launch file inside ford_demo package.
+Segmentation parameters should be tuned to improve performance.
+
 # ROS Occupancy Grid Prediction
 
 This package contains ROS C++ Occupancy Grid Prediction framework which includes point cloud preprocessing, ground segementation, occupancy grid generation, and occupancy grid prediction. The pipeline follows the approach defined by Itkina et al. [1]. The package is compatible with models trained in Tensorflow and PyTorch provided as protocol buffers (.pb) and torch script (.pt), respectively. It contains PredNet [1], PredNet with TAAConvLSTM, and PredNet with SAAConvLSTM [2] models trained on the KITTI dataset [3]. Pointcloud can be provided in the form of a rosbag or directly from the robot Lidar sensors. This package does not contain the Tensorflow C++ API and LibTorch API (PyTorch C++), and the rosbags. The example of the rosbags are available in [Ford AV Dataset](https://avdata.ford.com/) [4].
