@@ -63,11 +63,11 @@ The  authors would like to acknowledge this project being made possible by the f
 
 ## References
 
-[1] Itkina, M., Driggs-Campbell, K. and Kochenderfer, M.J., 2019, October. Dynamic Environment Prediction in Urban Scenes using Recurrent Representation Learning. In 2019 IEEE Intelligent Transportation Systems Conference (ITSC) (pp. 2052-2059). IEEE.
+[1] Itkina, M., Driggs-Campbell, K. and Kochenderfer, M.J., 2019, Dynamic Environment Prediction in Urban Scenes using Recurrent Representation Learning. In IEEE Intelligent Transportation Systems Conference (ITSC), pp. 2052-2059.
 
 [2] Lange, B., Itkina, M. and Kochenderfer, M.J., 2020. Attention Augmented ConvLSTM for Environment Prediction. arXiv preprint arXiv:2010.09662.
 
-[3] Geiger, A., Lenz, P., Stiller, C. and Urtasun, R., 2013. Vision meets robotics: The kitti dataset. The International Journal of Robotics Research, 32(11), pp.1231-1237.
+[3] Geiger, A., Lenz, P., Stiller, C. and Urtasun, R., 2013. Vision meets robotics: The kitti dataset. The International Journal of Robotics Research, 32(11), pp. 1231-1237.
 
 [4] Agarwal, S., Vora, A., Pandey, G., Williams, W., Kourous, H. and McBride, J., 2020. Ford Multi-AV Seasonal Dataset. arXiv preprint arXiv:2003.07969.
 
