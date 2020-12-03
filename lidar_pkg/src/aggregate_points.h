@@ -23,7 +23,7 @@ namespace lidar_pkg
         this->max_local_height = max_local_height;
       }
 
-    void filter(DDLPointCloud &cloud);
+    void filter(pcl::PointCloud<pcl::PointXYZ> &cloud);
     void setVehicle(lidar_msgs::VehicleMsg vehicle);
 
     private:
@@ -35,19 +35,19 @@ namespace lidar_pkg
       double min_height;
       double max_height;
       double max_local_height;
-      DDLPointCloud filt_cloud;
+      pcl::PointCloud<pcl::PointXYZ> filt_cloud;
 
       lidar_msgs::VehicleMsg vehicle;
       double E_m;
       double N_m;
 
-      bool isDeviceAndBeam(DDLPointType pt);
-      bool isAboveIntensity(DDLPointType pt);
-      bool isAboveDistance(DDLPointType pt);
-      bool isBelowHeight(DDLPointType pt);
-      bool isAboveHeight(DDLPointType pt);
-      bool isLocallyBelowHeight(DDLPointType pt);
-      bool isBelowMaxDistance(DDLPointType pt);
+      bool isDeviceAndBeam(pcl::PointXYZ pt);
+      bool isAboveIntensity(pcl::PointXYZ pt);
+      bool isAboveDistance(pcl::PointXYZ pt);
+      bool isBelowHeight(pcl::PointXYZ pt);
+      bool isAboveHeight(pcl::PointXYZ pt);
+      bool isLocallyBelowHeight(pcl::PointXYZ pt);
+      bool isBelowMaxDistance(pcl::PointXYZ pt);
   };
 
   class AggregatePoints : public nodelet::Nodelet
@@ -56,12 +56,12 @@ namespace lidar_pkg
       AggregatePoints(){}
     private:
       ros::Publisher pub;
-      DDLPointCloud agg_cloud;
-      DDLPointCloud yellow_cloud;
-      DDLPointCloud red_cloud;
-      DDLPointCloud blue_cloud;
-      DDLPointCloud green_cloud;
-      DDLPointCloud velo_cloud;
+      pcl::PointCloud<pcl::PointXYZ> agg_cloud;
+      pcl::PointCloud<pcl::PointXYZ> yellow_cloud;
+      pcl::PointCloud<pcl::PointXYZ> red_cloud;
+      pcl::PointCloud<pcl::PointXYZ> blue_cloud;
+      pcl::PointCloud<pcl::PointXYZ> green_cloud;
+      pcl::PointCloud<pcl::PointXYZ> velo_cloud;
       lidar_msgs::VehicleMsg vehicle_msg;
       CloudFilter filter;
 
@@ -75,11 +75,10 @@ namespace lidar_pkg
 
       virtual void onInit();
       void aggregate_cloud();
-      void yellow_cb(const DDLPointCloud::ConstPtr &pcMsg);
-      void red_cb(const DDLPointCloud::ConstPtr &pcMsg);
-      void blue_cb(const DDLPointCloud::ConstPtr &pcMsg);
-      void green_cb(const DDLPointCloud::ConstPtr &pcMsg);
-      void velo_cb(const DDLPointCloud::ConstPtr &pcMsg);
+      void yellow_cb(const pcl::PCLPointCloud2::ConstPtr &pcMsg);
+      void red_cb(const pcl::PCLPointCloud2::ConstPtr &pcMsg);
+      void blue_cb(const pcl::PCLPointCloud2::ConstPtr &pcMsg);
+      void green_cb(const pcl::PCLPointCloud2::ConstPtr &pcMsg);
       void vehicleCallback(const lidar_msgs::vehicle_state& vehicleState);
       void timerCallback(const ros::TimerEvent&);
     };

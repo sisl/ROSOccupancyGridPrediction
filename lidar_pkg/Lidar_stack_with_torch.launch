@@ -1,5 +1,15 @@
 <launch>
+
+
   <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
+
+  <include file="$(find ford_demo)/launch/multi_lidar_convert.launch"/>
+  <!-- <remap from="/lidar_yellow_pointcloud" to="AggregatePoints/lidar_yellow_pointcloud"/>
+  <remap from="/lidar_red_pointcloud" to="AggregatePoints/lidar_red_pointcloud"/>
+  <remap from="/lidar_blue_pointcloud" to="AggregatePoints/lidar_blue_pointcloud"/>
+  <remap from="/lidar_green_pointcloud" to="AggregatePoints/lidar_green_pointcloud"/> -->
+  <!-- </include> --> -->
+
 
   <node pkg="nodelet" type="nodelet" name="AggregatePoints" args="load lidar_pkg/AggregatePoints standalone_nodelet" output="screen">
     <remap from="/AggregatePoints/agg_points" to="MrfGroundSeg/agg_points"/> -->

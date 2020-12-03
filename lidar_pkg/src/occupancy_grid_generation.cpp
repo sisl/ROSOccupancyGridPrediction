@@ -45,7 +45,7 @@ namespace lidar_pkg
 
     while(true){
       try{
-        listener.lookupTransform("/map", "/vehicle_ground_cartesian", ros::Time(0), transform);
+        listener.lookupTransform("/map", "/imu", ros::Time(0), transform); // imu defines the /vehicle_cg_cartesian
         break;
       }
       catch (tf::TransformException ex){
@@ -332,7 +332,7 @@ namespace lidar_pkg
     occupancy_msg.data.clear();
     masses_msg.occ.clear();
     masses_msg.free.clear();
-    occupancy_msg.header.frame_id = "/vehicle_ground_cartesian"; //TODO: Make sure the frame is the correct one.
+    occupancy_msg.header.frame_id = "/imu";
     occupancy_msg.info.resolution = res;
     occupancy_msg.info.width = grid_size;
     occupancy_msg.info.height = grid_size;
