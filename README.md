@@ -1,39 +1,30 @@
 # ROS Occupancy Grid Prediction
 
-This package contains ROS C++ Occupancy Grid Prediction framework which includes point cloud preprocessing, ground segementation, occupancy grid generation, and occupancy grid prediction. The pipeline follows the approach defined by Itkina et al. [1]. The package is compatible with models trained in Tensorflow and PyTorch provided as protocol buffers (.pb) and torch script (.pt), respectively. It contains PredNet [1], PredNet with TAAConvLSTM, and PredNet with SAAConvLSTM [2] models trained on the KITTI dataset [3]. Pointcloud can be provided in the form of a rosbag or directly from the robot Lidar sensors. This package does not contain the Tensorflow C++ API and LibTorch API (PyTorch C++), and the rosbags. The example of the rosbags are available in [Ford AV Dataset](https://avdata.ford.com/) [4].
+This package contains ROS C++ Occupancy Grid Prediction framework which includes point cloud preprocessing, ground segementation, occupancy grid generation, and occupancy grid prediction. The pipeline follows the approach defined by Itkina et al. [1]. The package is compatible with models trained in Tensorflow and PyTorch provided as protocol buffers (.pb) and torch script (.pt), respectively. It contains PredNet [1], PredNet with TAAConvLSTM, and PredNet with SAAConvLSTM [2] models trained on the KITTI dataset [3]. Pointcloud can be provided in the form of a rosbag or directly from the robot Lidar sensors. This package does not contain the Tensorflow C++ API and LibTorch API (PyTorch C++), and the rosbags. The package is fully compatible with [Ford AV Dataset](https://avdata.ford.com/) [4].
 
 ## ROS Lidar pointcloud compatibility
 
-To ensure the compatibility with any rosbag, the raw Lidar pointcloud topics needs to be renamed in the aggregate_points.cpp file in lines 106-111 to match the topics and the number of Lidar sensors in the rosbag. The type of message used to represent the Lidar pointcloud and all other messages are defined in lidar_msgs. The package requires information about the vehicle motion between frames which is defined by evaluating the tranform between "/map" topic (ground truth) and "/vehicle_ground_cartesian". It is defined in timer_cb in occupancy_grid_generation.cpp.
+Frame and topics names are compatible with Ford AV Dataset. To ensure the compatibility with other rosbag, the raw Lidar pointcloud topics needs to be renamed in the aggregate_points.cpp to match the topics and the number of Lidar sensors in the rosbag. The type of message used to represent the Lidar pointcloud and all other messages are defined in lidar_msgs. 
 
 ## How to run it?
 
-1. Provide the path to the prediction model in inference_tf.cpp (line 42) or inference_torch.cpp (line 43). Example models are provided in the lidar_pkg/models. If tensorflow models is used, also define the name of the input and output layer in the following lines.
+1. Install Ford AV dataset ROS package and all dependencies from [Ford AV Dataset](https://avdata.ford.com/) [4] in your catkin_workspace.
 
-2. Set the simulation time.
+2. Replace the multi_lidar_convert.launch in ford_demo/launch with the file provided in other. 
+
+3. Provide the path to the prediction model in inference_torch.cpp (or inference_tf.cpp). Example models are provided in the lidar_pkg/models. If tensorflow models is used, also define the name of the input and output layer in the following lines.
+
+4. In the same terminal, launch the node. Pick the right launch file depending if you are doing inference using Tensorflow or LibTorch.
 
   ```bash
-  rosparam set use_sim_time True
-  ```
-3. In the same terminal, launch the node. Pick the right launch file depending if you are doing inference using Tensorflow or LibTorch.
-
-  ```bash
-  roslaunch lidar_pkg Lidar_stack_with_tensorflow.launch or roslaunch lidar_pkg Lidar_stack_with_torch.launch
+  roslaunch lidar_pkg launch_all.launch 
   ```  
-4. In a different terminal, start a rosbag. Ensure that the naming convention of the topics is correct.
+5. In a different terminal, start a rosbag from AV Dataset. Ensure that the naming convention of the topics is correct.
   
   ```bash
   rosbag play --clock path/to/the/rosbag
   ```
-5. Launch rviz in a different terminal.
-  
-  ```bash
-  rviz
-  ```
-  
-6. Load the correct configs in rviz. File -> Open Config -> Pick lidar_pkg/tensorflow_viz.rviz or lidar_pkg/torch_viz.rviz depending which inference models you are using.
-
-7. In the terminal with rosbag play command, press SPACE to stop/resume the rosbag. To see the predictions, press SPACE (pause). Predictions will appear to the right of the occupancy grid.
+6. In the terminal with rosbag play command, press SPACE to stop/resume the rosbag. To see the predictions, press SPACE (pause). Predictions will appear to the right of the occupancy grid.
 
 ## Example of the rviz visualization
 
@@ -59,7 +50,7 @@ Performance:
 | PredNet with SAAConvLSTM | -      |    5.1 ± 0.45 |
 
 ## Acknowledgements 
-The  authors would like to acknowledge this project being made possible by the funding from the Ford-Stanford Alliance. 
+The authors would like to acknowledge this project being made possible by the funding from the Ford-Stanford Alliance. The authors thank Stanford Dynamic Design Lab for providing Lidar processing stack.
 
 ## References
 
