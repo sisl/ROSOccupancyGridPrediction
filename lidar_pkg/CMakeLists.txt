@@ -18,6 +18,7 @@ find_package(catkin REQUIRED COMPONENTS
   nav_msgs
   roslib
   pcl_conversions
+  pcl_ros
   message_filters
   tf2
   tf2_ros

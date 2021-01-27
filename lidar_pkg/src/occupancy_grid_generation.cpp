@@ -40,23 +40,25 @@ namespace lidar_pkg
     We are looking for the translation of the vehicle wrt the global cs.
     */
 
-    tf::TransformListener listener;
-    tf::StampedTransform transform;
+    // tf::TransformListener listener;
+    // tf::StampedTransform transform;
+    //
+    // while(true){
+    //   try{
+    //     listener.lookupTransform("/map", "/vehicle_ground_cartesian", ros::Time(0), transform);
+    //     break;
+    //   }
+    //   catch (tf::TransformException ex){
+    //    ros::Duration(0.01).sleep();
+    //    continue;
+    //   }
+    // }
+    // prev_vehicle_x = vehicle_x;
+    // prev_vehicle_y = vehicle_y;
+    // vehicle_x = transform.getOrigin().x();
+    // vehicle_y = transform.getOrigin().y();
 
-    while(true){
-      try{
-        listener.lookupTransform("/map", "/vehicle_ground_cartesian", ros::Time(0), transform);
-        break;
-      }
-      catch (tf::TransformException ex){
-       ros::Duration(0.01).sleep();
-       continue;
-      }
-    }
-    prev_vehicle_x = vehicle_x;
-    prev_vehicle_y = vehicle_y;
-    vehicle_x = transform.getOrigin().x();
-    vehicle_y = transform.getOrigin().y();
+    // Bernard: I don't need frames ????? Are you sure?
     change_x = 0.0; // vehicle_x - prev_vehicle_x;
     change_y = 0.0; // vehicle_y - prev_vehicle_y;
 
@@ -162,9 +164,14 @@ namespace lidar_pkg
   {
     for (size_t i = 0; i < cloud.points.size(); i++)
     {
-      //TODO:We should do some clever shfting here.
       int x = (int)(cloud.points[i].x/res);
       int y = (int)(cloud.points[i].y/res);
+      double z = cloud.points[i].z;
+
+      //FIX: Quick hack for Ford dataset.
+      if ((-1)*z>0.5){
+        continue;
+      }
 
       // Checks if the pcl point is within our grid range.
       // TODO: Replace 64 with some grid size parameter set once.
@@ -319,8 +326,8 @@ namespace lidar_pkg
   void OccupancyGridGeneration::add_ego_vehicle_to_the_DST()
   {
     // Vehicle shape.
-    for(unsigned int i = 60;i<68;i++){
-      for(unsigned int j = 62;j<67;j++){
+    for(unsigned int j = 60;j<68;j++){
+      for(unsigned int i = 62;i<67;i++){
         meas_occ[j][i] = 1.0;
         meas_free[j][i] = 0.0;
       }
@@ -332,7 +339,7 @@ namespace lidar_pkg
     occupancy_msg.data.clear();
     masses_msg.occ.clear();
     masses_msg.free.clear();
-    occupancy_msg.header.frame_id = "/vehicle_ground_cartesian"; //TODO: Make sure the frame is the correct one.
+    occupancy_msg.header.frame_id = "/body"; //TODO: Make sure the frame is the correct one.
     occupancy_msg.info.resolution = res;
     occupancy_msg.info.width = grid_size;
     occupancy_msg.info.height = grid_size;

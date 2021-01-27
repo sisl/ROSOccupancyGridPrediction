@@ -6,7 +6,7 @@
 namespace lidar_msgs
 {
 
-class VehicleMsg{
+class VehicleData{
 
   private:
     lidar_msgs::vehicle_state ros_vehicleState;
@@ -16,8 +16,8 @@ class VehicleMsg{
   public:
 
     /* Constructors */
-    VehicleMsg();
-    VehicleMsg(const lidar_msgs::vehicle_state& vehicleState);
+    VehicleData();
+    VehicleData(const lidar_msgs::vehicle_state& vehicleState);
 
     /* Setters & Getters */
     void setState(const lidar_msgs::vehicle_state& vehicleState);

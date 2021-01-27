@@ -67,7 +67,7 @@ add_message_files(
 )
 
 add_library(${PROJECT_NAME}
-  src/vehicle_msg.cpp
+  src/vehicle_data.cpp
 )
 
 ## Generate services in the 'srv' folder

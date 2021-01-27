@@ -1,4 +1,7 @@
 <launch>
+
+  <node pkg="pcl_tf_frame" type="frame_broadcaster" name="broadcaster_dynamic" output="screen" />
+
   <node pkg="nodelet" type="nodelet" name="standalone_nodelet"  args="manager" output="screen"/>
 
   <node pkg="nodelet" type="nodelet" name="AggregatePoints" args="load lidar_pkg/AggregatePoints standalone_nodelet" output="screen">
