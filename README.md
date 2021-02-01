@@ -52,6 +52,8 @@ Performance:
 ## Acknowledgements 
 The authors would like to acknowledge this project being made possible by the funding from the Ford-Stanford Alliance. The authors thank Stanford Dynamic Design Lab for providing Lidar processing stack.
 
+Maintained by [Bernard Lange](https://web.stanford.edu/~blange/)
+
 ## References
 
 [1] Itkina, M., Driggs-Campbell, K. and Kochenderfer, M.J., 2019, Dynamic Environment Prediction in Urban Scenes using Recurrent Representation Learning. In IEEE Intelligent Transportation Systems Conference (ITSC), pp. 2052-2059.
