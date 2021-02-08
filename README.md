@@ -28,7 +28,7 @@ Frame and topics names are compatible with Ford AV Dataset. To ensure the compat
 
 ## Example of the rviz visualization
 
-![](images/Example_vis2.png)
+![](images/ROS_demo.gif)
 
 ## Experiments 
 
